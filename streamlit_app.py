@@ -12,7 +12,8 @@ name_on_order = st.text_input('Name on Smoothie:')
 st.write('The name of your smoothie will be:', name_on_order)
 
 # Acceder a la sesion que se encuentra activa para consultar las tablas
-session = get_active_session()
+cnx = st.connection("snowflake")
+session = cnx.session()
 
 # Consultar la tabla de ingredientes desde la base de Smoothies para mostrar como opciones
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
