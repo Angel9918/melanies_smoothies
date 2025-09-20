@@ -18,8 +18,8 @@ session = cnx.session()
 
 # Consultar la tabla de ingredientes desde la base de Smoothies para mostrar como opciones
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'),col('SEARCH_ON'))
-st.dataframe(data=my_dataframe, use_container_width=True)
-st.stop()
+#st.dataframe(data=my_dataframe, use_container_width=True)
+#st.stop()
 
 # Activar una opcion de opcion multiple para los ingredientes que se quieren agregar
 ingredients_list = st.multiselect (
