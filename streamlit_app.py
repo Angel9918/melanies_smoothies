@@ -19,8 +19,6 @@ session = cnx.session()
 # Consultar la tabla de ingredientes desde la base de Smoothies para mostrar como opciones
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 
-# st.dataframe(data=my_dataframe, use_container_width=True)
-
 # Activar una opcion de opcion multiple para los ingredientes que se quieren agregar
 ingredients_list = st.multiselect (
     'Choose up to 5 ingredients:'
@@ -30,14 +28,13 @@ ingredients_list = st.multiselect (
 
 # Muestra la lista de ingredientes seleccionados solo cuando exista al menos un registro para mostrar
 if ingredients_list:
-    # st.write(ingredients_list)
-    # st.text(ingredients_list)
 
     # Se crea con el fin de pasar la lista de ingredientes como un string y no como una lista
     ingredients_string = ''
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + ' '
-        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+        st.subheader(fruit_chosen + ' Nutrition Information')
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/"+fruit_chosen)
         st_df = st.dataframe(data=smoothiefroot_response.json(),use_container_width=True)
 
     # Se crea la tabla que almacenará los registros de ordenes directamente en Snowflake
@@ -45,11 +42,6 @@ if ingredients_list:
     my_insert_stmt = """ insert into smoothies.public.orders(ingredients, name_on_order)
             values ('""" + ingredients_string + """', '"""+ name_on_order +"""')"""
 
-    #st.write(my_insert_stmt)
-
-    # Permite realizar el debugging de la consulta antes de que se ejecute en la base
-    #st.stop()
-    
     time_to_insert = st.button('Submit Order')
 
     # Se verifica que la lista exista y se ejecuta el insert de la orden
