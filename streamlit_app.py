@@ -18,6 +18,7 @@ session = cnx.session()
 
 # Consultar la tabla de ingredientes desde la base de Smoothies para mostrar como opciones
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'),col('SEARCH_ON'))
+pd_df = my_datafram.to_pandas()
 #st.dataframe(data=my_dataframe, use_container_width=True)
 #st.stop()
 
